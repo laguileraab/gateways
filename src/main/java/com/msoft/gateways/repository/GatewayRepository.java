@@ -9,5 +9,5 @@ import com.msoft.gateways.model.Gateway;
 
 @Repository
 public interface GatewayRepository extends JpaRepository<Gateway, UUID>{
-    
+    Boolean existsByIpAddress(String ipAddress);
 }

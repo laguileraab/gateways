@@ -47,6 +47,15 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
     
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(AddressExistsException.class)
+    public ResponseEntity<MessageResponseError> addressExistsExceptionsHandler(Exception ex, WebRequest request) {
+        MessageResponseError errorDetails = new MessageResponseError
+                (HttpStatus.BAD_REQUEST,
+                        ex.getMessage(),
+                        "Error_in_" + request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                   HttpHeaders headers, HttpStatus status, WebRequest request) {

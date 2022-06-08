@@ -1,6 +1,7 @@
 package com.msoft.gateways.service;
 
 import com.msoft.gateways.dto.GatewayDTO;
+import com.msoft.gateways.exception.AddressExistsException;
 import com.msoft.gateways.exception.FoundElementException;
 import com.msoft.gateways.model.Gateway;
 import com.msoft.gateways.repository.GatewayRepository;
@@ -38,7 +39,9 @@ public class GatewayService {
     public GatewayDTO addGateway(Gateway gateway) {
         if (gateway.getId() != null && gatewayRepository.findById(gateway.getId()).isPresent())
             throw new FoundElementException("Peripheral already exists");
-        return modelMapper.map(
+            if (gateway.getIpAddress()!= null && gatewayRepository.existsByIpAddress(gateway.getIpAddress()))
+                throw new AddressExistsException("Ip address already asigned");
+            return modelMapper.map(
                 gatewayRepository.save(gateway),
                 GatewayDTO.class);
     }
