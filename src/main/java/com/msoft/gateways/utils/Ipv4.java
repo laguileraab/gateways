@@ -20,7 +20,7 @@ import javax.validation.constraints.Pattern;
 @Documented
 @ReportAsSingleViolation
 public @interface Ipv4 {
-  String message() default "must be ipv4";
+  String message() default "Ip address must be in ipv4 format";
 
   Class<?>[] groups() default {};
 

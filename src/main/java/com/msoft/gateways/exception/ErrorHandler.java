@@ -1,10 +1,16 @@
 package com.msoft.gateways.exception;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -27,13 +33,32 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<MessageResponseError> argumentTypeMismatchExceptionsHandler(Exception ex, WebRequest request) {
+    @ExceptionHandler({
+        MethodArgumentTypeMismatchException.class,
+        DataIntegrityViolationException.class,
+        SQLIntegrityConstraintViolationException.class,
+        IllegalArgumentException.class
+    })
+    public ResponseEntity<MessageResponseError> fieldsNotValidsExceptionsHandler(Exception ex, WebRequest request) {
         MessageResponseError errorDetails = new MessageResponseError
                 (HttpStatus.BAD_REQUEST,
                         "Fields are not valid",
                         "Error_in_" + request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+    
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                  HttpHeaders headers, HttpStatus status, WebRequest request) {
+           String errorMessage = ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
+        //    List<String> validationList = ex.getBindingResult().getFieldErrors().stream().map(fieldError->fieldError.getDefaultMessage()).collect(Collectors.toList());
+           //ApiErrorVO apiErrorVO = new ApiErrorVO(errorMessage);
+           //apiErrorVO.setErrorList(validationList);
+           MessageResponseError errorDetails = new MessageResponseError
+                (HttpStatus.BAD_REQUEST,
+                errorMessage,
+                        "Error_in_" + request.getDescription(false));
+           return new ResponseEntity<>(errorDetails, status);
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -44,16 +69,6 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
                         ex.getMessage(),
                         "Error_in_" + request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<MessageResponseError> illegalArgumentExceptionsHandler(Exception ex, WebRequest request) {
-        MessageResponseError errorDetails = new MessageResponseError
-                (HttpStatus.BAD_REQUEST,
-                        "Fields are not valid",
-                        "Error_in_" + request.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
