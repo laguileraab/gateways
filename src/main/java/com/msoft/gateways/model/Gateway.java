@@ -20,9 +20,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SelectBeforeUpdate;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.msoft.gateways.utils.Ipv4;
 
 import java.io.Serializable;
@@ -53,7 +56,7 @@ public class Gateway implements Serializable {
     @Column(name = "IP", nullable = false, unique = true, length = 15)
     private String ipAddress;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "ID_Gateway")
-    Set<Peripheral> peripherals = new HashSet<>();
+    private Set<Peripheral> peripherals;
 }

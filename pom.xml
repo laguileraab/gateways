@@ -162,7 +162,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Plugin usado para calcular el test coverage del proyecto -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -183,7 +182,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Plugin usado para ejecutar las pruebas y generar informacion de sus resultados -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

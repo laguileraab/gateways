@@ -46,7 +46,7 @@ public class Peripheral implements Serializable {
     @Column(name="ONLINE", nullable = false)
     private Boolean online;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "ID_Gateway")
     private Gateway gateway;
 

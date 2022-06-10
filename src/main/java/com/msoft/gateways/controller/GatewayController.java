@@ -87,6 +87,22 @@ public class GatewayController {
 						gatewayService.addGateway(gateway), 201));
 	}
 
+	@Operation(summary = "Add peripheral to gateway")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "201", description = "Peripheral added to gateway", content = {
+					@Content(mediaType = "application/json",
+							schema = @Schema(implementation = GenericResponseDTO.class)) }),
+			@ApiResponse(responseCode = "400", description = "Invalid fields", content = @Content)
+	})
+	@PutMapping("/{id}/peripheral")
+	public ResponseEntity<GenericResponseDTO> addPeripheralToGateway(@PathVariable String id, @Valid @RequestBody Peripheral peripheral) {
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(new GenericResponseDTO(
+						"Peripheral added successfully to gateway " + id,
+						gatewayService.addPeripheralToGateway(id, peripheral), 200));
+	}
+
 	@Operation(summary = "Update gateway by id")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Gateway updated", content = {
@@ -108,9 +124,29 @@ public class GatewayController {
 						gatewayService.updateGateway(id, gateway), 200));
 	}
 
+	@Operation(summary = "Delete peripheral from gateway by Id")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Peripheral removed from gateway successfully", content = {
+					@Content(mediaType = "application/json",
+							schema = @Schema(implementation = GenericResponseDTO.class)) }),
+			@ApiResponse(responseCode = "400", description = "Gateway id not supplied", content = @Content),
+			@ApiResponse(responseCode = "404", description = "Peripheral not found", content = {
+					@Content(mediaType = "application/json",
+							schema = @Schema(implementation = MessageResponseError.class)) })
+	})
+	@DeleteMapping("/{id}/peripheral/{idPeripheral}")
+	public ResponseEntity<GenericResponseDTO> removePeripheralFromGateway(@PathVariable String id, @PathVariable Long idPeripheral) {
+		gatewayService.removePeripheralFromGateway(id, idPeripheral);
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(new GenericResponseDTO(
+						"Peripheral removed successfully from gateway " + id,
+						id, 200));
+	}
+
 	@Operation(summary = "Delete gateway by Id")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Delete gateway successfully", content = {
+			@ApiResponse(responseCode = "200", description = "Gateway deleted successfully", content = {
 					@Content(mediaType = "application/json",
 							schema = @Schema(implementation = GenericResponseDTO.class)) }),
 			@ApiResponse(responseCode = "400", description = "Gateway id not supplied", content = @Content),

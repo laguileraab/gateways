@@ -1,11 +1,10 @@
 package com.msoft.gateways.exception;
 
-public class AddressExistsException extends RuntimeException {
-
+public class FullGatewayException extends RuntimeException {
+    
     private static final long serialVersionUID = 1L;
 
-    public AddressExistsException(String message) {
+    public FullGatewayException(String message) {
         super(message);
     }
-    
 }
