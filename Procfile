@@ -1,0 +1,1 @@
+web: java -jar target/gateways-0.0.1-SNAPSHOT.jar -Dserver.port=$PORT
