@@ -129,7 +129,7 @@ and everything must be UP.
 
 :triangular_flag_on_post: Important!
 
-Also this project is currently deployed on [Heroku](https://msoftgateways.herokuapp.com).
+Also this project is currently deployed on [Heroku](https://msoftgateways.herokuapp.com/swagger-ui.html).
 
 
 ## ✍️ Author <a name = "author"></a>
