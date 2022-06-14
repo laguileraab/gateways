@@ -59,8 +59,7 @@ The following tools were used in this project:
 
 
 ## :checkered_flag: Starting ## <a name = "starting"></a>
-We need to install maven dependencies and test will failed in this part, thats why we skip them because it needs to be created a connection database and User "user" for testing. [See here](https://docs.spring.io/spring-security/site/docs/5.0.x/reference/html/test-method.html#test-method-withuserdetails)
-
+We need to install maven dependencies.
 
 ```bash
 # Clone this project
@@ -70,7 +69,7 @@ $ git clone https://github.com/laguileraab/gateways
 $ cd gateways
 
 # Install dependencies and skip tests
-$ mvn clean install -DskipTests
+$ mvn clean install
 
 # Run the project
 $ java -jar .\target\gateways-0.0.1-SNAPSHOT.jar
